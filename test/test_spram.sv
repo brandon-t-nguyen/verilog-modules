@@ -80,17 +80,17 @@ initial begin
     write(1, 8'had);
     write(2, 8'hbe);
     write(3, 8'hef);
-    read(0); `T_EXPECT_EQ(rd_data, expect_data[0], "0x%1h")
-    read(1); `T_EXPECT_EQ(rd_data, expect_data[1], "0x%1h")
-    read(2); `T_EXPECT_EQ(rd_data, expect_data[2], "0x%1h")
-    read(3); `T_EXPECT_EQ(rd_data, expect_data[3], "0x%1h")
+    read(0); `T_EXPECT_EQ(rd_data, expect_data[0], "0x%2h")
+    read(1); `T_EXPECT_EQ(rd_data, expect_data[1], "0x%2h")
+    read(2); `T_EXPECT_EQ(rd_data, expect_data[2], "0x%2h")
+    read(3); `T_EXPECT_EQ(rd_data, expect_data[3], "0x%2h")
 
     `T_TEST("striping")
     for (i = 0; i < DATA_DEPTH; i = i + 1) begin
         write(i, i % 2 ? 8'ha5 : 8'h5a);
     end
     for (i = 0; i < DATA_DEPTH; i = i + 1) begin
-        read(i); `T_EXPECT_EQ(rd_data, expect_data[i], "0x%1h")
+        read(i); `T_EXPECT_EQ(rd_data, expect_data[i], "0x%2h")
     end
 
     `T_TEST("random-data")
@@ -98,7 +98,7 @@ initial begin
         write(i, $random() % 256);
     end
     for (i = 0; i < DATA_DEPTH; i = i + 1) begin
-        read(i); `T_EXPECT_EQ(rd_data, expect_data[i], "0x%1h")
+        read(i); `T_EXPECT_EQ(rd_data, expect_data[i], "0x%2h")
     end
 
     `T_TEST("read-disable")
@@ -106,7 +106,7 @@ initial begin
     for (i = 0; i < DATA_DEPTH; i = i + 1) begin
         addr = i;
         @(negedge clk);
-        `T_EXPECT_EQ(rd_data, expect_data[0], "0x%1h")
+        `T_EXPECT_EQ(rd_data, expect_data[0], "0x%2h")
     end
 
     `T_FINISH
