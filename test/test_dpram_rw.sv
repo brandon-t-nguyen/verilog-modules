@@ -113,6 +113,19 @@ initial begin
         `T_EXPECT_EQ(rd_data, expect_data[0], "0x%1h")
     end
 
+    `T_TEST("simultaenous")
+    write(128, 8'hff);
+
+    // read and write to 128 at same time
+    wr_en   = 1;
+    wr_addr = 128;
+    wr_data = 8'h5a;
+    rd_en   = 1;
+    rd_addr = 128;
+    @(negedge clk); expect_data[128] = 8'h5a;
+    `T_EXPECT_EQ(rd_data, 8'hff, "0x%1h")
+    read(128); `T_EXPECT_EQ(rd_data, expect_data[128], "0x%1h")
+
     `T_FINISH
 end
 
